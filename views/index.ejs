@@ -1,0 +1,16 @@
+<h1>Welcome to Chat World</h1>
+
+
+<form action="/createUser" method="POST">
+  <div class="form-group">
+    <label for="userName">User Name:</label>
+    <input type="text" class="form-control" name="userName" maxlength="25" placeholder="Leave blank for a random username" />
+  </div>
+  <button type="submit" class="btn btn-primary">Log In</button>
+</form>
+
+<% if (lastUser) { %>
+  <br />
+  <p>Or enter as &nbsp;<a href="/chat/lobby"><%= lastUser.userName %></a></p>
+<% } %>
+

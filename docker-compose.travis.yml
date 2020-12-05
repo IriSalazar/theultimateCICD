@@ -1,0 +1,60 @@
+version: '3'
+services:
+    redis:
+        image: redis
+        container_name: cache
+        expose:
+            - 6379
+    app:
+        build:
+            context: .
+        container_name: chat-application
+        restart: always
+        volumes:
+            - /usr/src/app/node_modules
+            - ./:/usr/src/app
+        ports:
+            - "4000:4000"
+        command:
+            "npm run dev"
+
+        links:
+            - redis
+        environment:
+            - REDIS_PORT=${REDIS_PORT}
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_URL=${REDIS_URL}
+            - REDIS_ADAPTER_URL=${REDIS_ADAPTER_URL}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - DATABASE_SERVICE=${DATABASE_SERVICE}
+            - PORT=${PORT}
+            - SENDGRID_USER=${SENDGRID_USER}
+            - SENDGRID_PASS=${SENDGRID_PASS}
+            - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+            - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+            - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+            - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+            - FRONTEND_LINK=${FRONTEND_LINK}
+    db:
+        container_name: chat-application-db
+        image: postgres
+        volumes: 
+            - postgresqlVol:/var/lib/postgresql/data
+
+        ports:
+            - "5432:5432"
+    nginx:
+        image: nginx:1.13
+        container_name: chat-application-nginx
+        ports: 
+            - "80:80"
+        volumes: 
+            - ./nginx:/etc/nginx/conf.d
+        depends_on: 
+            - app
+        logging: 
+            driver: none # json-file
+volumes:
+    postgresqlVol:

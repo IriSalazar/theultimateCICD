@@ -1,0 +1,45 @@
+version: '3'
+services:
+    redis:
+        image: redis
+        container_name: cache
+        expose:
+            - 6379
+    app:
+        build:
+            context: .
+        container_name: chat-application
+        restart: always
+        volumes:
+            - /usr/src/app/node_modules
+            - ./:/usr/src/app
+        ports:
+            - "4000:4000"
+        command:
+            "npm run dev"
+
+        links:
+            - redis
+        environment:
+            - REDIS_URL=redis://cache
+    db:
+        container_name: chat-application-db
+        image: postgres
+        volumes: 
+            - postgresqlVol:/var/lib/postgresql/data
+
+        ports:
+            - "5432:5432"
+    nginx:
+        image: nginx:1.13
+        container_name: chat-application-nginx
+        ports: 
+            - "80:80"
+        volumes: 
+            - ./nginx:/etc/nginx/conf.d
+        depends_on: 
+            - app
+        logging: 
+            driver: none # json-file
+volumes:
+    postgresqlVol:

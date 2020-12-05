@@ -1,0 +1,14 @@
+version: '3'
+services:
+  api:
+    container_name: cicd-repository
+    image: $AWS_ACCESS_KEY_ID.dkr.ecr.us-east-1.amazonaws.com/cicd-repository:latest
+    restart: always
+    ports:
+      - "4000:4000"
+    command:
+      "npm run start"
+    env_file: 
+      - /home/ubuntu/app/.env
+    environment: 
+      - NODE_ENV=production

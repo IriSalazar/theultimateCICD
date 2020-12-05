@@ -1,0 +1,42 @@
+{
+  "name": "ChatApp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server",
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.2.6",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "faker": "^5.1.0",
+    "fs": "0.0.1-security",
+    "google-auth-library": "^6.1.3",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.2.1",
+    "node-ec2-metadata": "0.0.5",
+    "nodemailer": "^6.4.13",
+    "pg": "^8.3.2",
+    "pg-hstore": "^2.3.3",
+    "redis": "^3.0.2",
+    "redis-rejson": "^1.0.0",
+    "sequelize": "^6.3.4",
+    "should": "^13.2.3",
+    "socket.io": "^2.3.0",
+    "socket.io-redis": "^5.4.0",
+    "supertest": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

@@ -1,0 +1,36 @@
+<div class="chat-header">
+    <h1 class="display-4"><%= chatRoom.name %>'s Chat</h1>
+</div>
+
+<hr>
+
+<div class="help">
+    <p class="title">In Chat Commands:</p>
+    <% if (chatRoom.userId == user.id) { %>
+        <p class="tip"><strong>/ban username:</strong> Use this to ban a user from the conversation.</p>
+    <% } %>
+    <p class="tip"><strong>/leave:</strong> Use this to leave the conversation.</p>
+    <p class="tip"><strong>/info:</strong> Get information about the chat room.</p>
+</div>
+
+<div 
+    id="message-container" 
+    user="<%= JSON.stringify(user) %>"
+    owner="<%= owner %>"
+    chatRoom="<%= JSON.stringify(chatRoom) %>"
+    previousMessages="<%= JSON.stringify(messages) %>"
+    submitPath="<%= `/chat/chatroom/${chatRoom.id}/message` %>"
+    banPath="<%= `/chat/chatroom/${chatRoom.id}/ban` %>"
+    leavePath="/chat/lobby">
+</div>
+<form id="send-container">
+    <input type="text" name="content" id="message-input" required>
+    <input type="hidden" name="userName" value="<%= user.userName %>">
+    <input type="hidden" name="userId" value="<%= user.id %>">
+    <input type="hidden" name="chatRoomId" value="<%= chatRoom.id %>">
+    <input type="submit" name="create" value="Send" id="send-button" />
+</form>
+
+<div class="btn-center">
+    <a href="/chat/lobby" class="btn btn-secondary">Back to Lobby</a>
+</div>

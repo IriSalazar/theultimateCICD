@@ -1,0 +1,53 @@
+<h1>Chat Rooms</h1>
+
+<hr>
+
+<% if(chatRooms.length) { %>
+  <table class="table table-striped">
+    <tr>
+      <th>Name</th>
+      <th>Creation date</th>
+      <th>Join Chat</th>
+      <th>Action</th>
+    </tr>
+    <% chatRooms.forEach((cr) => { %>
+      <tr>
+        <td><%= cr.name %></td>
+        <td><%= cr.createdAt.toLocaleDateString() %></td>
+        <% if (!bannedRoomsIds.includes(cr.id)) { %>
+          <td><a class="btn btn-outline-primary btn-sm btn-block" href="/chat/chatroom/<%= cr.id %>">Enter</a></td>
+        <% } else { %>
+          <td><button class="btn btn-danger btn-sm btn-block" disabled>Banned</button></td>
+        <% } %>
+        <% if (currentUserId == cr.userId) { %>
+          <td>
+            <form action="/chat/deleteChatroom/<%= cr.id %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input class="btn btn-outline-danger btn-sm btn-block" type="submit" value="Delete" />
+            </form>
+          </td>
+        <% } else { %>
+          <td><button class="btn btn-secondary btn-sm btn-block" disabled>Unavailable</button></td>
+        <% } %>
+      </tr>
+    <% }) %>
+  </table>
+<% } else { %>
+  <div class="alert alert-info">
+    There are no chat rooms yet. You can create one below.
+  </div>
+<% } %>
+
+<div>
+  <a href="/" class="btn btn-secondary">Back to Menu</a>
+</div>
+
+<br />
+
+<form action="/chat/createChatroom" method="POST">
+  <div class="form-group">
+    <label for="userName">Create a Chat Room</label>
+    <input type="text" class="form-control" name="name" placeholder="Chat Room Name" required />
+  </div>
+  <button type="submit" class="btn btn-primary">Create Room</button>
+</form>

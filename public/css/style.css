@@ -1,0 +1,112 @@
+.chat-header {
+  text-align: center;
+}
+
+.btn-center {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#message-container {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 75%;
+  height: 70vh;
+  margin: 10px auto;
+  background-color: white;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-shadow: 5px 5px 18px #00000070;
+}
+
+#message-container div.message {
+  margin: 5px 0;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: fit-content;
+  min-width: 25%;
+  max-width: 45%;
+}
+
+#message-container div.typer {
+  margin: 5px 2px;
+  font-weight: lighter;
+  font-size: small;
+  font-style: oblique;
+}
+
+#message-container div.alert {
+  position: relative;
+  width: 60%;
+  height: 15px;
+  margin: auto 20%;
+  background-color: yellow;
+  border: 1px solid black;
+  overflow: scroll;
+}
+
+div.message p {
+  margin: auto 5px;
+}
+
+div.message p.name {
+  margin-top: 1px;
+  font-weight: bold;
+}
+
+div.message p.content {
+  font-size: medium;
+}
+
+div.message p.datetime {
+  font-weight: lighter;
+  font-size: small;
+  text-align: right;
+}
+
+div.alert p {
+  font-weight: lighter;
+  font-size: small;
+  padding: 0;
+  margin-top: -10px;
+  text-align: center;
+}
+
+#send-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px auto;
+  width: 75%;
+}
+
+#send-container #message-input {
+  width: 80%;
+  height: 60%;
+  border-radius: 5px;
+  border: solid black;
+  box-shadow: 5px 10px 18px #00000070;
+}
+
+#send-container #send-button {
+  width: 18%;
+  padding: 2px;
+  background-color: lightsteelblue;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 5px 10px 18px #00000070;
+}
+
+.help {
+  margin-bottom: 30px;
+}
+
+.help p.title {
+  font-weight: bold;
+  font-size: medium;
+  margin: 2px auto 0 auto;
+}
+
+.help p.tip {
+  font-size: small;
+  margin: 0 auto 0 10px;
+}

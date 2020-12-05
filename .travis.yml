@@ -1,0 +1,65 @@
+language: node_js
+node_js:
+  - 12
+
+env:
+  - AWS_USER_ID="922803931776" AWS_ECR_API="922803931776.dkr.ecr.us-east-1.amazonaws.com/cicd-repository"
+services:
+  - docker
+branches:
+    only:
+      - main
+
+before_install:
+  - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
+  - unzip awscliv2.zip
+  - sudo ./aws/install
+  - sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
+  - docker-compose --version
+
+script:
+  #- docker-compose build
+  #- docker-compose up -d
+  #- docker-compose exec backend app/tests.sh
+  - echo "no tests girl!" #Tests go here
+  - sed -i -e 's/\r$//' scripts/start.sh
+  - sed -i -e 's/\r$//' scripts/stop.sh
+  - sed -i -e 's/\r$//' scripts/install.sh
+  - zip -r latest *
+  - mkdir -p dpl_cd_upload
+  - mv latest.zip dpl_cd_upload/latest.zip
+
+after_success:
+  - docker --version  # document the version travis is using
+  - pip install --user awscli # install aws cli w/o sudo
+  - export PATH=$PATH:$HOME/.local/bin # put aws in the path
+  - eval $(aws ecr get-login --region us-east-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+  - docker build -t $AWS_ECR_API:latest .
+  - docker push $AWS_ECR_API:latest
+  - docker images
+
+deploy:
+  - provider: s3
+    access_key_id: ${AWS_ACCESS_KEY_ID}
+    secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+    local_dir: dpl_cd_upload
+    skip_cleanup: true
+    bucket: "bucket-for-cicd"
+    region: us-east-1
+    upload-dir: latest
+    on:
+      main: true
+
+  - provider: codedeploy
+    access_key_id: ${AWS_ACCESS_KEY_ID}
+    secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+    bucket: "bucket-for-cicd"
+    key: latest/latest.zip
+    bundle_type: zip
+    application: CICD-app
+    deployment_group: CICD-app
+    region: us-east-1
+    wait_until_deployed: true
+    on:
+      branch: main
