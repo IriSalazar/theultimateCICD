@@ -22,7 +22,7 @@ script:
   #- docker-compose build
   #- docker-compose up -d
   #- docker-compose exec backend app/tests.sh
-  - echo "no tests!" #Tests go here
+  - echo "no tests dude!" #Tests go here
   - sed -i -e 's/\r$//' scripts/start.sh
   - sed -i -e 's/\r$//' scripts/stop.sh
   - sed -i -e 's/\r$//' scripts/install.sh
