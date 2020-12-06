@@ -1,4 +1,4 @@
-version: 0.0
+version: 20.04.1
 os: ubuntu
 
 files:
