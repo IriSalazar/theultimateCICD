@@ -8,7 +8,7 @@ services:
   - docker
 branches:
     only:
-      - main
+      - master
 
 before_install:
   - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -22,7 +22,7 @@ script:
   #- docker-compose build
   #- docker-compose up -d
   #- docker-compose exec backend app/tests.sh
-  - echo "no tests dude!" #Tests go here
+  - echo "no tests!" #Tests go here
   - sed -i -e 's/\r$//' scripts/start.sh
   - sed -i -e 's/\r$//' scripts/stop.sh
   - sed -i -e 's/\r$//' scripts/install.sh
@@ -49,7 +49,7 @@ deploy:
     region: us-east-1
     upload-dir: latest
     on:
-      main: true
+      master: true
 
   - provider: codedeploy
     access_key_id: ${AWS_ACCESS_KEY_ID}
@@ -62,4 +62,4 @@ deploy:
     region: us-east-1
     wait_until_deployed: true
     on:
-      branch: main
+      branch: master
