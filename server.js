@@ -82,7 +82,11 @@ process.on('SIGINT', async () => {
 
 const users = {};
 
-io.adapter(redisAdapter({ host: REDIS_ADAPTER_URL, port: REDIS_PORT }));
+try {
+  io.adapter(redisAdapter({ host: REDIS_ADAPTER_URL, port: REDIS_PORT }));
+} catch (err) {
+  console.log('Adapter failed')
+}
 // Socket connection code start
 io.on('connection', (socket) => {
   socket.on('new-connection', (data) => {

@@ -28,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
     date: {
         type: DataTypes.DATE,
         allowNull: false,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     }
   }, {
       tableName: 'messages',

@@ -17,7 +17,8 @@ services:
             - "4000:4000"
         command:
             "npm run dev"
-
+        env_file:
+            - ./.env
         links:
             - redis
         environment:
@@ -27,7 +28,8 @@ services:
         image: postgres
         volumes: 
             - postgresqlVol:/var/lib/postgresql/data
-
+        env_file: 
+            - ./.env_db
         ports:
             - "5432:5432"
     nginx:

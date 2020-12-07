@@ -2,28 +2,25 @@ const { Sequelize } = require('sequelize');
 
 
 module.exports = (sequelize, DataTypes) => {
-  const Chatroom = sequelize.define('chatroom', {
-    id: {
+  const Request = sequelize.define('request', {
+    chatRoomId: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    }, 
     userId: {
       type: DataTypes.STRING,
       allowNull: false,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
     },
-    privacy: {
+    admitted: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false
+      defaultValue: false,
     }
   }, {
-      tableName: 'chatrooms',
+      tableName: 'requests',
   });
-  return Chatroom;
+  return Request;
 };

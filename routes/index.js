@@ -31,28 +31,31 @@ router.post('/createUser', async (req, res) => {
     }
     await user.save().then((user) => { toSendUser = user });
     const accessToken = generateToken(req.body);
-    // const refreshToken = jwt.sign(toSendUser.dataValues, process.env.REFRESH_TOKEN_SECRET);
-    // await toSendUser.update({ refreshToken }, { fields: ['refreshToken'] });
-    res.status(201).json({ user: { id: toSendUser.id, userName: toSendUser.userName, mail: toSendUser.mail, token: accessToken } });
+    res.status(201).json({ user: { id: toSendUser.id, userName: toSendUser.userName, mail: toSendUser.mail, token: accessToken, admin: toSendUser.admin } });
 });
 
 router.post('/logIn', async (req, res) => {
     let user = await req.db.user.findOne({ where: { mail: req.body.mail, password: req.body.password } });
     if (!user) {
         return res.sendStatus(404);
+    } else if (!user.active) {
+        return res.sendStatus(401);
     }
     const refreshToken = jwt.sign({ userName: user.userName, mail: user.mail, password: user.password }, process.env.REFRESH_TOKEN_SECRET);
-    await user.update({ refreshToken }, { fields: ['refreshToken'] }) // TODO check if this works
-    const accessToken = generateToken({ userName: user.userName, mail: user.mail, password: user.password });
-    // const refreshToken = jwt.sign(user.dataValues, process.env.REFRESH_TOKEN_SECRET);
-    res.status(200).json({ user: { id: user.id, userName: user.userName, mail: user.mail, token: accessToken } });
+    await user.update({ refreshToken }, { fields: ['refreshToken'] }); // TODO check if this works
+    const accessToken = generateToken({ userName: user.userName, mail: user.mail, password: user.password, admin: user.admin });
+    res.status(200).json({ user: { id: user.id, userName: user.userName, mail: user.mail, token: accessToken, admin: user.admin } });
 })
 
 router.post('/googleLogin', async (req, res) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    const user = await googleOAuth(token);
-    res.status(200).json(user);
+    try {
+        const user = await googleOAuth(token);
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(403);
+    }
 });
 
 module.exports = router;
